@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Hiring Assistant - Full Stack Documentation
 
-## Getting Started
+## Overview
 
-First, run the development server:
+The AI Hiring Assistant is a web application designed to simplify and enhance the recruitment process by:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+* Parsing and embedding resumes
+* Matching candidates to job descriptions using OpenAI embeddings and FAISS
+* Scheduling interviews via Google Calendar API
+
+Built using:
+
+* **Frontend**: Next.js (with Tailwind CSS)
+* **Backend**: FastAPI (Python)
+* **AI**: OpenAI's embedding and chat completion APIs
+* **Search**: FAISS (vector search)
+* **Scheduling**: Google Calendar API
+
+---
+
+## Backend Structure
+
+**Directory:** `backend/`
+
+### Key Files & Folders
+
+* `main.py`: Main FastAPI app with endpoints
+* `models/`
+
+  * `schemas.py`: Pydantic models (for request/response bodies)
+* `services/`
+
+  * `embeddings.py`: Embedding logic using OpenAI API
+  * `faiss_index.py`: FAISS index storage and querying
+  * `parser.py`: Resume text extraction from PDF/DOCX
+* `storage/`
+
+  * `faiss.index`: Persistent vector index file
+* `utils/`
+
+  * `logger.py`: Optional logging utilities
+
+### API Endpoints
+
+#### `POST /upload_resume`
+
+* Accepts: PDF or DOCX file
+* Extracts text, generates embedding, stores in FAISS index
+
+#### `POST /match`
+
+* Accepts: Job description (text)
+* Returns: Top 3 matching resumes with similarity score
+
+#### `POST /book`
+
+* Accepts: Name, email, and interview time
+* Books a calendar event in Google Calendar
+
+---
+
+## Frontend Structure
+
+**Directory:** `src/`
+
+### Pages
+
+* `app/page.tsx`: Home page
+* `app/scheduler/page.tsx`: Interview booking page
+
+### Components
+
+* `UploadForm.tsx`: File uploader for resumes + job description input
+* `MatchResults.tsx`: Displays matching candidates
+* `SchedulerForm.tsx`: Interview booking form
+
+### Lib
+
+* `lib/api.ts`: API calling utilities
+* `lib/openai.ts`, `pinecone.ts`: (early stages - optional abstraction)
+
+### Styling
+
+* Tailwind CSS with Google Fonts (Geist)
+* Minimal, clean design
+
+---
+
+## Google Calendar Integration
+
+### Service Account
+
+* Create a service account via Google Cloud Console
+* Share your interview calendar with `client_email` from service account
+* Save JSON credentials to `.env` or `google_creds.json`
+
+### Endpoint Logic
+
+* Loads service credentials
+* Creates event with specified slot, summary, and attendee email
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the `backend/`:
+
+```
+OPENAI_API_KEY=your-openai-key
+GOOGLE_APPLICATION_CREDENTIALS=google_creds.json
+GOOGLE_CALENDAR_ID=your-calendar-id
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Future Improvements
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Pull real-time availability from Google Calendar
+* Add authentication and admin dashboard
+* Send confirmation emails
+* Rate limiting and error handling
+* Export match reports
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## How to Run
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
-## Deploy on Vercel
+### Frontend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm install
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Backend runs at: `http://localhost:8000`
+Frontend at: `http://localhost:3000`
+
+---
+
+## Authors
+
+Built for Holboxathon 2025 - Problem 4: Agentic AI Hiring Assistant

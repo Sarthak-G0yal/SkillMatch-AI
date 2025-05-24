@@ -4,6 +4,9 @@ import uvicorn
 from services.parser import extract_text_from_file
 from services.embeddings import get_embedding
 from services.faiss_index import add_to_index, search_top_k
+from services.google_calendar import create_event
+from pydantic import BaseModel
+from routes import booking
 
 resume_texts = []
 resume_vectors = []
@@ -18,6 +21,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(booking.router)
 
 @app.post("/upload_resume")
 async def upload_resume(file: UploadFile = File(...)):
@@ -47,6 +51,26 @@ async def match_job_description(job_description: str = Form(...)):
         })
 
     return {"matches": results}
+
+class BookingRequest(BaseModel):
+    name: str
+    slot: str
+
+# @app.post("/book")
+# async def book_interview(data: BookingRequest):
+#     try:
+#         event_link = create_event(data.name, data.slot)
+#         return {"message": f"Interview booked for {data.name}", "event_link": event_link}
+#     except Exception as e:
+#         return {"error": str(e)}
+@app.post("/book")
+async def book_interview(data: BookingRequest):
+    try:
+        event_link = create_event(data.name, data.slot)
+        return {"message": f"Interview booked for {data.name}", "event_link": event_link}
+    except Exception as e:
+        import traceback
+        return {"error": str(e), "trace": traceback.format_exc()}
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

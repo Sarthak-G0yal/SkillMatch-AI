@@ -1,298 +1,95 @@
-// // 'use client';
+'use client';
 
-// // import { useState } from 'react';
-
-// // export default function UploadForm() {
-// //   const [file, setFile] = useState<File | null>(null);
-// //   const [parsedText, setParsedText] = useState<string>('');
-// //   const [loading, setLoading] = useState(false);
-// //   const [jobDesc, setJobDesc] = useState('');
-// //   const [similarity, setSimilarity] = useState<number | null>(null);
-
-// //   const BACKEND_URL = 'http://localhost:8000'; // Change this if you deploy
-
-// //   async function handleUpload(e: React.FormEvent) {
-// //     e.preventDefault();
-// //     if (!file) return;
-// //     setLoading(true);
-
-// //     const formData = new FormData();
-// //     formData.append('file', file);
-
-// //     const res = await fetch(`${BACKEND_URL}/upload`, {
-// //       method: 'POST',
-// //       body: formData,
-// //     });
-
-// //     const data = await res.json();
-// //     setParsedText(data.text || data.error);
-// //     setLoading(false);
-// //   }
-
-// //   async function handleCompare() {
-// //     const formData = new FormData();
-// //     formData.append('resume', new Blob([parsedText], { type: 'text/plain' }));
-// //     formData.append('job_description', new Blob([jobDesc], { type: 'text/plain' }));
-
-// //     const res = await fetch(`${BACKEND_URL}/compare`, {
-// //       method: 'POST',
-// //       body: formData,
-// //     });
-
-// //     if (!res.ok) {
-// //       console.error("Server error:", res.status, res.statusText);
-// //       return;
-// //     }
-
-// //     const data = await res.json();
-// //     setSimilarity(data.similarity);
-// //   }
-
-// //   return (
-// //     <div className="space-y-4">
-// //       <form onSubmit={handleUpload} className="space-y-4">
-// //         <input
-// //           type="file"
-// //           accept=".pdf,.docx"
-// //           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-// //         />
-// //         <button
-// //           type="submit"
-// //           disabled={!file || loading}
-// //           className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-// //         >
-// //           {loading ? 'Parsing…' : 'Upload & Parse'}
-// //         </button>
-// //       </form>
-
-// //       <div className="space-y-4">
-// //         <textarea
-// //           rows={6}
-// //           placeholder="Paste job description here..."
-// //           value={jobDesc}
-// //           onChange={(e) => setJobDesc(e.target.value)}
-// //           className="w-full p-2 border rounded"
-// //         />
-// //         <button
-// //           onClick={handleCompare}
-// //           disabled={!parsedText || !jobDesc}
-// //           className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50"
-// //         >
-// //           Match Resume to Job Description
-// //         </button>
-// //       </div>
-
-// //       {similarity !== null && (
-// //         <div className="mt-4 text-lg">
-// //           Match Score: <strong>{(similarity * 100).toFixed(2)}%</strong> –{' '}
-// //           <span className={similarity > 0.75 ? 'text-green-600' : similarity > 0.5 ? 'text-yellow-600' : 'text-red-600'}>
-// //             {similarity > 0.75 ? 'Strong Match' : similarity > 0.5 ? 'Moderate Match' : 'Weak Match'}
-// //           </span>
-// //         </div>
-// //       )}
-
-// //       {parsedText && (
-// //         <div>
-// //           <h2 className="text-xl font-semibold">Parsed Text:</h2>
-// //           <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded">
-// //             {parsedText}
-// //           </pre>
-// //         </div>
-// //       )}
-// //     </div>
-// //   );
-// // }
-
-
-// 'use client';
-
-// import { useState } from 'react';
-
-// export default function UploadForm() {
-//   const [file, setFile] = useState<File | null>(null);
-//   const [parsedText, setParsedText] = useState<string>('');
-//   const [loading, setLoading] = useState(false);
-//   const [jobDesc, setJobDesc] = useState('');
-//   const [similarity, setSimilarity] = useState<number | null>(null);
-//   const [error, setError] = useState<string | null>(null);
-
-//   async function handleUpload(e: React.FormEvent) {
-//     e.preventDefault();
-//     if (!file) return;
-
-//     setLoading(true);
-//     setError(null);
-
-//     const formData = new FormData();
-//     formData.append('file', file);
-
-//     try {
-//       const res = await fetch('http://localhost:8000/upload', {
-//         method: 'POST',
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-
-//       if (data.error) {
-//         setError(data.error);
-//         setParsedText('');
-//       } else {
-//         setParsedText(data.text);
-//       }
-//     } catch (err) {
-//       setError('Upload failed.');
-//     }
-
-//     setLoading(false);
-//   }
-
-//   async function handleCompare() {
-//     setError(null);
-
-//     const formData = new FormData();
-//     formData.append('resume', new Blob([parsedText], { type: 'text/plain' }));
-//     formData.append('job_description', new Blob([jobDesc], { type: 'text/plain' }));
-
-//     try {
-//       const res = await fetch('http://localhost:8000/compare', {
-//         method: 'POST',
-//         body: formData,
-//       });
-
-//       const text = await res.text();
-
-//       try {
-//         const data = JSON.parse(text);
-//         if (data.similarity !== undefined) {
-//           setSimilarity(data.similarity);
-//         } else {
-//           setError(data.error || 'Invalid response');
-//         }
-//       } catch (err) {
-//         setError('Invalid JSON response from backend.');
-//         console.error('Raw backend response:', text);
-//       }
-//     } catch (err) {
-//       setError('Comparison failed.');
-//     }
-//   }
-
-//   return (
-//     <div className="space-y-4 max-w-2xl mx-auto">
-//       <form onSubmit={handleUpload} className="space-y-4">
-//         <input
-//           type="file"
-//           accept=".pdf,.docx"
-//           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-//         />
-//         <button
-//           type="submit"
-//           disabled={!file || loading}
-//           className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-//         >
-//           {loading ? 'Parsing…' : 'Upload & Parse'}
-//         </button>
-//       </form>
-
-//       <textarea
-//         rows={6}
-//         placeholder="Paste job description here..."
-//         value={jobDesc}
-//         onChange={(e) => setJobDesc(e.target.value)}
-//         className="w-full p-2 border rounded"
-//       />
-
-//       <button
-//         onClick={handleCompare}
-//         disabled={!parsedText || !jobDesc}
-//         className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50"
-//       >
-//         Match Resume to Job Description
-//       </button>
-
-//       {similarity !== null && (
-//         <div className="mt-4 text-lg">
-//           Match Score:{' '}
-//           <strong>{(similarity * 100).toFixed(2)}%</strong> –{' '}
-//           <span className={similarity > 0.75 ? 'text-green-600' : similarity > 0.5 ? 'text-yellow-600' : 'text-red-600'}>
-//             {similarity > 0.75
-//               ? 'Strong Match'
-//               : similarity > 0.5
-//               ? 'Moderate Match'
-//               : 'Weak Match'}
-//           </span>
-//         </div>
-//       )}
-
-//       {parsedText && (
-//         <div>
-//           <h2 className="text-xl font-semibold">Parsed Resume Text:</h2>
-//           <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded">
-//             {parsedText}
-//           </pre>
-//         </div>
-//       )}
-
-//       {error && (
-//         <div className="text-red-600 font-medium mt-4">
-//           Error: {error}
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-"use client";
-import { useState } from "react";
-import { uploadResume, matchJobDescription } from "@/lib/api";
+import { useState } from 'react';
 
 export default function UploadForm() {
-  const [files, setFiles] = useState<File[]>([]);
-  const [jobDescription, setJobDescription] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
+  const [description, setDescription] = useState('');
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const handleUpload = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resume || !description) return;
+
+    const formData = new FormData();
+    formData.append('file', resume);
+    await fetch('http://localhost:8000/upload_resume', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const matchData = new FormData();
+    matchData.append('job_description', description);
     setLoading(true);
-    for (const file of files) {
-      await uploadResume(file);
-    }
-    const result = await matchJobDescription(jobDescription);
+    const response = await fetch('http://localhost:8000/match', {
+      method: 'POST',
+      body: matchData,
+    });
+    const result = await response.json();
     setMatches(result.matches || []);
     setLoading(false);
+    setShowModal(true);
   };
 
   return (
-    <div className="max-w-xl mx-auto p-4">
-      <h1 className="text-xl font-bold mb-2">Upload Resumes</h1>
-      <input type="file" multiple onChange={(e) => setFiles(Array.from(e.target.files || []))} />
-      <textarea
-        placeholder="Paste Job Description"
-        className="w-full mt-4 p-2 border rounded"
-        rows={6}
-        value={jobDescription}
-        onChange={(e) => setJobDescription(e.target.value)}
-      />
-      <button
-        onClick={handleUpload}
-        className="bg-blue-600 text-white px-4 py-2 mt-2 rounded"
-      >
-        Match Candidates
-      </button>
+    <div className="max-w-lg w-full mx-auto p-8 bg-white shadow border border-gray-200 rounded-xl space-y-6">
+      <h1 className="text-2xl font-semibold text-gray-800 text-center">AI Resume Matcher</h1>
 
-      {loading && <p className="mt-4">Matching in progress...</p>}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Upload Resume</label>
+          <input
+            type="file"
+            accept=".pdf,.docx"
+            onChange={(e) => setResume(e.target.files?.[0] || null)}
+            className="w-full border rounded-lg px-3 py-2 text-sm"
+          />
+        </div>
 
-      {matches.length > 0 && (
-        <div className="mt-6">
-          <h2 className="font-semibold mb-2">Top Matches</h2>
-          {matches.map((match, i) => (
-            <div key={i} className="border p-2 rounded mb-2">
-              <p><strong>Filename:</strong> {match.filename}</p>
-              <p><strong>Score:</strong> {match.score.toFixed(3)}</p>
-              <p className="text-sm mt-1">{match.snippet}...</p>
-            </div>
-          ))}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={6}
+            className="w-full border rounded-lg px-3 py-2 text-sm resize-none"
+            placeholder="Paste the job description here..."
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white font-medium py-2 rounded-lg hover:bg-blue-700 transition"
+          disabled={loading}
+        >
+          {loading ? 'Matching...' : 'Match Resume'}
+        </button>
+      </form>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white w-full max-w-lg p-6 rounded-xl shadow-md">
+            <h2 className="text-lg font-semibold mb-4 text-center">Top Matches</h2>
+            {matches.length > 0 ? (
+              matches.map((match, i) => (
+                <div key={i} className="border rounded-lg p-4 mb-4 text-sm">
+                  <p className="font-medium text-gray-800">{match.filename}</p>
+                  <p className="text-gray-600 mt-1">Score: {(match.score * 100).toFixed(2)}%</p>
+                  <p className="text-gray-500 mt-2 line-clamp-3">{match.snippet}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-600">No matches found.</p>
+            )}
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 w-full text-sm bg-gray-100 py-2 rounded-lg hover:bg-gray-200"
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>

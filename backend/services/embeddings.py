@@ -1,6 +1,15 @@
 import numpy as np
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Locate the .env file in a parent directory
+env_path = Path(__file__).resolve().parents[1] / '.env'  # adjust [1] as needed
+
+# Load environment variables from that file
+load_dotenv(dotenv_path=env_path)
+
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
