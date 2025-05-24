@@ -100,21 +100,35 @@
 //   );
 // }
 
-'use client';
+// 'use client';
 
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
+
+// export default function Home() {
+//   const [msg, setMsg] = useState('Loading…');
+//   useEffect(() => {
+//     fetch('/api/hello')
+//       .then((res) => res.json())
+//       .then((data) => setMsg(data.message));
+//   }, []);
+//   return (
+//     <main className="p-8">
+//       <h1 className="text-3xl font-bold">AI Hiring Assistant</h1>
+//       <p className="mt-4">{msg}</p>
+//     </main>
+//   );
+// }
+
+
+// src/app/page.tsx
+import UploadForm from '@/components/UploadForm';
 
 export default function Home() {
-  const [msg, setMsg] = useState('Loading…');
-  useEffect(() => {
-    fetch('/api/hello')
-      .then((res) => res.json())
-      .then((data) => setMsg(data.message));
-  }, []);
   return (
-    <main className="p-8">
+    <main className="p-8 space-y-6">
       <h1 className="text-3xl font-bold">AI Hiring Assistant</h1>
-      <p className="mt-4">{msg}</p>
+      <UploadForm />
     </main>
   );
 }
+
