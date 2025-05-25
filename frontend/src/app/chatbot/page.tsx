@@ -1,96 +1,101 @@
-'use client';
+'use client'
 
-import React, { useState, useEffect } from 'react';
-import questions from '@/config/chatbot_questions.json';
-import axios from 'axios';
+import React, { useState } from 'react'
+import questions from '@/config/chatbot_questions.json'
+
+type QA = {
+  question: string
+  answer: string
+}
 
 export default function ChatbotPage() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const [input, setInput] = useState('');
-  const [chatHistory, setChatHistory] = useState<{ question: string; answer: string }[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const [step, setStep] = useState(0)
+  const [history, setHistory] = useState<QA[]>([])
+  const [input, setInput] = useState('')
+  const [feedback, setFeedback] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmitAnswer = () => {
-    if (!input.trim()) return;
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const currentQuestion = questions[step]
+    const newEntry: QA = { question: currentQuestion, answer: input }
 
-    const question = questions[currentQuestionIndex];
-    const answer = input.trim();
+    const updatedHistory = [...history, newEntry]
+    setHistory(updatedHistory)
+    setInput('')
 
-    const newHistory = [...chatHistory, { question, answer }];
-    setChatHistory(newHistory);
-    setAnswers([...answers, answer]);
-    setInput('');
+    if (step + 1 === questions.length) {
+      setLoading(true)
+      try {
+        const answers = updatedHistory.map((entry) => entry.answer);
 
-    if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+        const res = await fetch('/api/chatbot_feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers }), 
+        })
+
+        const data = await res.json()
+        // setFeedback(data.summary || 'No feedback received.')
+        // Combine the two fields into one string:
+        if (data.strengths || data.weaknesses) {
+        setFeedback(`${data.strengths || ''}\n\n${data.weaknesses || ''}`)
+        } 
+        else {
+            setFeedback('No feedback received.')
+        }
+      } catch (err) {
+        console.error('Error generating feedback:', err)
+        setFeedback('Error generating feedback. Please try again.')
+      } finally {
+        setLoading(false)
+      }
     } else {
-      submitAnswers([...answers, answer]);
+      setStep(step + 1)
     }
-  };
-
-  const submitAnswers = async (finalAnswers: string[]) => {
-    setIsSubmitting(true);
-    try {
-      const response = await axios.post('/api/chatbot_feedback', finalAnswers);
-      setFeedback(response.data.summary);
-    } catch (error) {
-      console.error('Failed to get feedback:', error);
-      setFeedback('An error occurred while generating feedback.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  }
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Candidate Chatbot Pre-Screening</h1>
+      <h1 className="text-2xl font-semibold mb-4">Candidate Chatbot Pre-Screening</h1>
 
-      <div className="border border-gray-300 rounded-md p-4 h-80 overflow-y-auto mb-4 bg-white">
-        {chatHistory.map((entry, index) => (
-          <div key={index} className="mb-4">
-            <p className="font-semibold">Q: {entry.question}</p>
-            <p className="ml-2">A: {entry.answer}</p>
+      <div className="border rounded p-4 h-64 overflow-y-auto mb-4 bg-gray-50">
+        {history.map((entry, idx) => (
+          <div key={idx} className="mb-4">
+            <p className="font-medium text-gray-700">Q: {entry.question}</p>
+            <p className="text-gray-900">A: {entry.answer}</p>
           </div>
         ))}
-
-        {!feedback && (
-          <div className="mb-4">
-            <p className="font-semibold">Q: {questions[currentQuestionIndex]}</p>
-          </div>
-        )}
       </div>
 
-      {!feedback && (
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
+      {feedback ? (
+        <div className="mt-6 border p-4 rounded bg-green-50 whitespace-pre-wrap">
+          <h2 className="text-xl font-bold text-green-800 mb-2">Feedback Summary</h2>
+          <p className="text-gray-800">{feedback}</p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <label className="block font-medium text-gray-700 mb-2">
+            {questions[step]}
+          </label>
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSubmitAnswer()}
-            className="flex-1 border border-gray-300 rounded-md px-4 py-2"
-            placeholder="Type your answer..."
-            disabled={isSubmitting}
+            rows={3}
+            className="w-full border rounded px-3 py-2 mb-2"
+            required
           />
           <button
-            onClick={handleSubmitAnswer}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-            disabled={isSubmitting}
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            disabled={loading}
           >
-            Send
+            {step + 1 === questions.length ? 'Submit Answers' : 'Next Question'}
           </button>
-        </div>
+        </form>
       )}
 
-      {isSubmitting && <p className="mt-4 text-gray-600">Generating feedback...</p>}
-
-      {feedback && (
-        <div className="mt-6 bg-gray-100 p-4 rounded-md">
-          <h2 className="text-xl font-semibold mb-2">Candidate Summary</h2>
-          <pre className="whitespace-pre-wrap">{feedback}</pre>
-        </div>
-      )}
+      {loading && <p className="text-gray-500 mt-4">Processing feedback...</p>}
     </div>
-  );
+  )
 }
