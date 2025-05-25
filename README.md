@@ -60,14 +60,15 @@ A **tool-using AI agent** that autonomously handles key recruitment tasks: it �
 │   ├── services/             # parser, embeddings, faiss\_index, summary, google\_calendar, store
 │   ├── storage/              # faiss.index
 │   └── credentials.json      # Google service account key
-└── src/
-├── app/                  # Next.js App Router pages
-│   ├── page.tsx          # Home
-│   ├── upload/page.tsx   # Bulk uploader
-│   ├── match/page.tsx    # Job matching UI
-│   └── scheduler/page.tsx# Interview scheduler UI
-├── components/           # UploadForm.tsx, MatchResults.tsx, SchedulerForm.tsx
-└── lib/api.ts            # Frontend API wrappers
+└── frontend/
+  └── src/
+    ├── app/                  # Next.js App Router pages
+    │   ├── page.tsx          # Home
+    │   ├── upload/page.tsx   # Bulk uploader
+    │   ├── match/page.tsx    # Job matching UI
+    │   └── scheduler/page.tsx# Interview scheduler UI
+    ├── components/           # UploadForm.tsx, MatchResults.tsx, SchedulerForm.tsx
+    └── lib/api.ts            # Frontend API wrappers
 
 ```
 
