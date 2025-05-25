@@ -117,6 +117,24 @@ A **tool-using AI agent** that autonomously handles key recruitment tasks: it �
 
 ---
 
+### 📬 5. **Chatbot Pre-Screening**
+
+> 🧪 Accessible at: [`http://localhost:3000/chatbot`](http://localhost:3000/chatbot)
+
+This feature simulates a pre-interview chatbot that asks candidates a fixed set of screening questions.
+
+#### Functionality
+
+* Prompts the candidate with five screening questions.
+* Accepts free-form answers.
+* After submission, it returns:
+
+  * A strengths summary
+  * A weaknesses summary
+* Designed for future scoring & PDF export integration.
+
+---
+
 ## ⚙️ Environment & Setup
 
 Create a `.env` in `backend/`:
@@ -196,9 +214,6 @@ npm run dev
 
    - **Drag-and-Drop & Batch Actions**  
      Upgrade the UI with drag-and-drop bulk upload, mass-delete, and batch export.
-
-   - **Chatbot Pre-Screening**  
-     Embed a conversational bot to ask initial screening questions and rank responses automatically.
 
    - **Model Fine-Tuning & A/B Testing**  
      Experiment with fine-tuned embedding/summarization models and measure improvements in candidate relevance.
