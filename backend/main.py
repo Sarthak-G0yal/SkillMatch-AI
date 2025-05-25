@@ -9,6 +9,8 @@ from services.summary import generate_resume_summary  # ✅ NEW
 from pydantic import BaseModel
 from routes import booking, upload  # add 'upload'
 from services.store import resume_texts, resume_vectors, resume_files
+from routes import chatbot  
+
 
 
 
@@ -24,6 +26,7 @@ app.add_middleware(
 
 app.include_router(booking.router)
 app.include_router(upload.router) 
+app.include_router(chatbot.router)
 
 @app.post("/upload_resume")
 async def upload_resume(file: UploadFile = File(...)):

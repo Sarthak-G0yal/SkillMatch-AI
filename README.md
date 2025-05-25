@@ -191,9 +191,6 @@ npm run dev
    - **Interactive Analytics Dashboard**  
      Chart hiring metrics—uploads per day, average match scores, time-to-hire—to surface actionable insights.
 
-   - **Resume Enhancement Suggestions**  
-     Leverage GPT to give candidates AI-driven tips on improving resumes (e.g. stronger bullet points, keyword optimization).
-
    - **Multi-Language & Localization**  
      Extend parsing and matching to multiple languages for global talent pools.
 
