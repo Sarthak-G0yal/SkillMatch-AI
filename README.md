@@ -119,8 +119,6 @@ A **tool-using AI agent** that autonomously handles key recruitment tasks: it �
 
 ### 📬 5. **Chatbot Pre-Screening**
 
-> 🧪 Accessible at: [`http://localhost:3000/chatbot`](http://localhost:3000/chatbot)
-
 This feature simulates a pre-interview chatbot that asks candidates a fixed set of screening questions.
 
 #### Functionality

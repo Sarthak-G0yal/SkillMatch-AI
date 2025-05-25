@@ -5,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 px-6 py-12 text-gray-800">
       <div className="max-w-4xl mx-auto">
         <header className="mb-10">
-          <h1 className="text-4xl font-bold text-blue-800 mb-3">Agentic AI Hiring Assistant</h1>
+          <h1 className="text-4xl font-bold text-blue-800 mb-3">SkillMatch AI</h1>
           <p className="text-lg text-gray-700">
             Upload resumes, match them with job descriptions, and summarize top candidates. All powered by OpenAI + FAISS.
           </p>
