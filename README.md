@@ -1,4 +1,4 @@
-# AI Hiring Assistant
+# SkillMatch AI
 
 A **tool-using AI agent** that autonomously handles key recruitment tasks: it “perceives” (parses resumes), “reasons” (embeds and semantically matches them), and “acts” (books interviews via Google Calendar). By chaining these capabilities, it behaves like a specialized recruiting assistant that you can query with natural inputs.
 
