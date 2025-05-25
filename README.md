@@ -1,113 +1,97 @@
-# AI Hiring Assistant - Full Stack Documentation
+# AI Hiring Assistant
 
-## Overview
+A web application designed to simplify and enhance the recruitment process using AI.
 
-The AI Hiring Assistant is a web application designed to simplify and enhance the recruitment process by:
+## ✨ Features
 
-* Parsing and embedding resumes
-* Matching candidates to job descriptions using OpenAI embeddings and FAISS
-* Scheduling interviews via Google Calendar API
-
-Built using:
-
-* **Frontend**: Next.js (with Tailwind CSS)
-* **Backend**: FastAPI (Python)
-* **AI**: OpenAI's embedding and chat completion APIs
-* **Search**: FAISS (vector search)
-* **Scheduling**: Google Calendar API
+- Upload and parse resumes
+- Embed and semantically match resumes to job descriptions using OpenAI
+- Retrieve top matching candidates using FAISS vector search
+- Book interviews directly to Google Calendar
 
 ---
 
-## Backend Structure
+## 🧱 Tech Stack
+
+| Layer        | Tech                                   |
+|--------------|----------------------------------------|
+| Frontend     | Next.js, Tailwind CSS                  |
+| Backend      | FastAPI (Python)                       |
+| AI           | OpenAI Embeddings, Chat Completions    |
+| Search       | FAISS (Facebook AI Similarity Search)  |
+| Scheduling   | Google Calendar API                    |
+
+---
+
+## 📁 Backend Structure
 
 **Directory:** `backend/`
 
 ### Key Files & Folders
 
-* `main.py`: Main FastAPI app with endpoints
-* `models/`
-
-  * `schemas.py`: Pydantic models (for request/response bodies)
-* `services/`
-
-  * `embeddings.py`: Embedding logic using OpenAI API
-  * `faiss_index.py`: FAISS index storage and querying
-  * `parser.py`: Resume text extraction from PDF/DOCX
-* `storage/`
-
-  * `faiss.index`: Persistent vector index file
-* `utils/`
-
-  * `logger.py`: Optional logging utilities
-
-### API Endpoints
+- `main.py`: Entry point for FastAPI app and router includes
+- `models/schemas.py`: Pydantic request and response schemas
+- `routes/booking.py`: Google Calendar booking logic
+- `services/`
+  - `embeddings.py`: Embedding resumes/job descriptions
+  - `faiss_index.py`: Indexing and searching with FAISS
+  - `parser.py`: Extract text from PDF/DOCX resumes
+  - `google_calendar.py`: Calendar event creation logic
+- `storage/faiss.index`: Persistent FAISS index file
 
 #### `POST /upload_resume`
-
-* Accepts: PDF or DOCX file
-* Extracts text, generates embedding, stores in FAISS index
+- **Input:** Resume file (PDF or DOCX)
+- **Output:** Success status, stored embedding
 
 #### `POST /match`
-
-* Accepts: Job description (text)
-* Returns: Top 3 matching resumes with similarity score
+- **Input:** Job description (text)
+- **Output:** Top 3 matched resumes with similarity scores
 
 #### `POST /book`
-
-* Accepts: Name, email, and interview time
-* Books a calendar event in Google Calendar
+- **Input:** Candidate name, email, and interview time
+- **Output:** Google Calendar confirmation
 
 ---
 
-## Frontend Structure
+## 🎨 Frontend Structure
 
 **Directory:** `src/`
 
 ### Pages
 
-* `app/page.tsx`: Home page
-* `app/scheduler/page.tsx`: Interview booking page
+- `app/page.tsx`: Home dashboard
+- `app/upload/page.tsx`: Resume uploader and matcher
+- `app/match/page.tsx`: Top candidates display
+- `app/scheduler/page.tsx`: Interview booking form
 
 ### Components
 
-* `UploadForm.tsx`: File uploader for resumes + job description input
-* `MatchResults.tsx`: Displays matching candidates
-* `SchedulerForm.tsx`: Interview booking form
+- `UploadForm.tsx`: Upload form component
+- `MatchResults.tsx`: Candidate result cards
+- `SchedulerForm.tsx`: Form to pick and book slots
 
-### Lib
+### Libraries
 
-* `lib/api.ts`: API calling utilities
-* `lib/openai.ts`, `pinecone.ts`: (early stages - optional abstraction)
-
-### Styling
-
-* Tailwind CSS with Google Fonts (Geist)
-* Minimal, clean design
+- `lib/api.ts`: Utility functions for API interaction
+- `lib/openai.ts`, `lib/pinecone.ts`: Reserved for future modularization
 
 ---
 
-## Google Calendar Integration
+## 🗓 Google Calendar Integration
 
-### Service Account
+### Setup
 
-* Create a service account via Google Cloud Console
-* Share your interview calendar with `client_email` from service account
-* Save JSON credentials to `.env` or `google_creds.json`
+1. Create a **Service Account** in Google Cloud Console.
+2. Share your calendar with the service account's `client_email`.
+3. Save your credentials JSON file as `backend/credentials.json`.
 
-### Endpoint Logic
+### Environment Setup
 
-* Loads service credentials
-* Creates event with specified slot, summary, and attendee email
+Create `.env` file in `backend/`:
 
----
-
-## Environment Variables
-
-Create a `.env` file in the `backend/`:
-
-```
+```env
 OPENAI_API_KEY=your-openai-key
-GOOGLE_APPLICATION_CREDENTIALS=google_creds.json
+GOOGLE_APPLICATION_CREDENTIALS=credentials.json
 GOOGLE_CALENDAR_ID=your-calendar-id
 ```
 
@@ -148,3 +132,5 @@ Frontend at: `http://localhost:3000`
 ## Authors
 
 Built for Holboxathon 2025 - Problem 4: Agentic AI Hiring Assistant
+
+By: EMC / Sarthak Goyal

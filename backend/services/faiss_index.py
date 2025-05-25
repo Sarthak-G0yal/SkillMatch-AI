@@ -4,7 +4,7 @@ import numpy as np
 DIM = 1536
 index = faiss.IndexFlatL2(DIM)
 
-def add_to_index(vector: np.ndarray):
+def add_to_index(filename: str, vector: list[float]):
     index.add(np.array([vector]))
 
 def search_top_k(vector: np.ndarray, k: int = 3):

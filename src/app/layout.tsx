@@ -28,13 +28,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
       >
-        <nav className="bg-white shadow px-6 py-4 flex gap-6 items-center">
-          <Link href="/" className="font-bold text-lg">AI Hiring Assistant</Link>
-          <Link href="/upload" className="hover:underline">Upload</Link>
-          <Link href="/match" className="hover:underline">Match</Link>
-          <Link href="/scheduler" className="hover:underline">Scheduler</Link>
+        <nav className="bg-white shadow px-6 py-4 flex gap-8 items-center">
+          <Link href="/" className="font-bold text-lg text-blue-800 hover:underline">
+            AI Hiring Assistant
+          </Link>
+          <Link href="/upload" className="hover:underline font-medium text-sm">
+            Upload
+          </Link>
+          <Link href="/match" className="hover:underline font-medium text-sm">
+            Match
+          </Link>
+          <Link href="/scheduler" className="hover:underline font-medium text-sm">
+            Scheduler
+          </Link>
         </nav>
-        <main className="max-w-3xl mx-auto px-4 py-8">{children}</main>
+        <main className="max-w-4xl mx-auto px-4 py-10">{children}</main>
       </body>
     </html>
   );

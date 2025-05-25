@@ -7,33 +7,32 @@ export default function Home() {
         <header className="mb-10">
           <h1 className="text-4xl font-bold text-blue-800 mb-3">Agentic AI Hiring Assistant</h1>
           <p className="text-lg text-gray-700">
-            Smart, semantic, and streamlined recruitment. Upload resumes, match job descriptions,
-            and schedule interviews – all powered by AI.
+            Upload resumes, match them with job descriptions, and summarize top candidates. All powered by OpenAI + FAISS.
           </p>
         </header>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FeatureCard
-            title="📄 Resume Uploader"
-            description="Upload candidate resumes in .pdf or .docx format. We extract and store them for AI matching."
+            title="📄 Upload Resumes"
+            description="Upload resumes in PDF/DOCX format. We extract and store them for AI matching."
             link="/upload"
             color="bg-white"
           />
           <FeatureCard
-            title="🎯 Job Matching"
-            description="Paste your job description and instantly find top-matching resumes using OpenAI embeddings + FAISS."
+            title="🎯 Match Candidates"
+            description="Paste job descriptions and instantly get best-matching resumes with AI-generated summaries."
             link="/match"
             color="bg-white"
           />
           <FeatureCard
-            title="📆 Interview Scheduler"
-            description="Book interview slots with top candidates. (Calendar API integration coming soon.)"
+            title="📆 Schedule Interviews"
+            description="Book interviews directly with matched candidates. Integrated with Google Calendar."
             link="/scheduler"
             color="bg-white"
           />
           <FeatureCard
-            title="📊 Insights (coming soon)"
-            description="View analytics and hiring funnel metrics. Get AI summaries of hiring performance."
+            title="📊 Hiring Insights (Coming Soon)"
+            description="AI-powered analytics and summaries on your hiring pipeline."
             link="#"
             color="bg-white"
           />

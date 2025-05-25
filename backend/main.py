@@ -5,12 +5,12 @@ from services.parser import extract_text_from_file
 from services.embeddings import get_embedding
 from services.faiss_index import add_to_index, search_top_k
 from services.google_calendar import create_event
+from services.summary import generate_resume_summary  # ✅ NEW
 from pydantic import BaseModel
-from routes import booking
+from routes import booking, upload  # add 'upload'
+from services.store import resume_texts, resume_vectors, resume_files
 
-resume_texts = []
-resume_vectors = []
-resume_files = []
+
 
 app = FastAPI()
 
@@ -21,7 +21,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 app.include_router(booking.router)
+app.include_router(upload.router) 
 
 @app.post("/upload_resume")
 async def upload_resume(file: UploadFile = File(...)):
@@ -39,15 +41,19 @@ async def upload_resume(file: UploadFile = File(...)):
 async def match_job_description(job_description: str = Form(...)):
     if not resume_vectors:
         return {"error": "No resumes uploaded yet."}
+
     job_vector = get_embedding(job_description)
     D, I = search_top_k(job_vector, k=min(3, len(resume_vectors)))
 
     results = []
     for score, idx in zip(D, I):
+        text = resume_texts[idx]
+        summary = generate_resume_summary(text)  # ✅ Call GPT-4 summary
         results.append({
             "filename": resume_files[idx],
             "score": float(1 / (1 + score)),
-            "snippet": resume_texts[idx][:300]
+            "text": text,
+            "summary": summary
         })
 
     return {"matches": results}
@@ -56,13 +62,6 @@ class BookingRequest(BaseModel):
     name: str
     slot: str
 
-# @app.post("/book")
-# async def book_interview(data: BookingRequest):
-#     try:
-#         event_link = create_event(data.name, data.slot)
-#         return {"message": f"Interview booked for {data.name}", "event_link": event_link}
-#     except Exception as e:
-#         return {"error": str(e)}
 @app.post("/book")
 async def book_interview(data: BookingRequest):
     try:
