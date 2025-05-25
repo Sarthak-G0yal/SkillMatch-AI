@@ -155,45 +155,58 @@ npm run dev
 * Analytics dashboard
 
 ---
+## 🐳 Dockerization
+
+   To simplify local development and deployment, we provide Dockerfiles and a Docker-Compose setup:
+
+   1. **Backend** (`backend/Dockerfile`)
+   2. **Frontend** (`frontend/Dockerfile`)
+   3. **docker-compose.yml** at the project root
+
+   Follow these steps:
+   ```bash
+   # Build & start both services
+   docker-compose build
+   docker-compose up
+   ```
+```
+   * Frontend → [http://localhost:3000](http://localhost:3000)
+   * Backend  → [http://localhost:8000](http://localhost:8000)
+
+   ```
+   ## 🔮 Future Improvements
+
+   - **Real-Time Availability**  
+     Use Google Calendar’s Free/Busy API to fetch actual open slots and prevent double-booking.
+
+   - **Email Notifications & Reminders**  
+     Send candidates confirmation emails on booking and reminders shortly before their interview.
+
+   - **Authentication & Role-Based Access**  
+     Integrate NextAuth (or similar) to secure routes and differentiate Recruiter/Hiring Manager/Candidate roles.
+
+   - **Export & Reporting**  
+     Offer CSV/PDF exports of match results, summaries, and schedules for offline review or audit.
+
+   - **Interactive Analytics Dashboard**  
+     Chart hiring metrics—uploads per day, average match scores, time-to-hire—to surface actionable insights.
+
+   - **Resume Enhancement Suggestions**  
+     Leverage GPT to give candidates AI-driven tips on improving resumes (e.g. stronger bullet points, keyword optimization).
+
+   - **Multi-Language & Localization**  
+     Extend parsing and matching to multiple languages for global talent pools.
+
+   - **Drag-and-Drop & Batch Actions**  
+     Upgrade the UI with drag-and-drop bulk upload, mass-delete, and batch export.
+
+   - **Chatbot Pre-Screening**  
+     Embed a conversational bot to ask initial screening questions and rank responses automatically.
+
+   - **Model Fine-Tuning & A/B Testing**  
+     Experiment with fine-tuned embedding/summarization models and measure improvements in candidate relevance.
 
 ## 📜 Authors
 
 **Holboxathon 2025 – Problem 4: Agentic AI Hiring Assistant**</br>
 By EMC / Sarthak Goyal
-
-
-## 🔮 Future Improvements
-
-While the core AI Hiring Assistant is fully functional, here are some enhancements to consider next:
-
-- **Real-Time Availability**  
-  Integrate Google Calendar’s Free/Busy API to fetch actual open slots and prevent double-booking.
-
-- **Email Notifications & Reminders**  
-  Automatically send confirmation emails to candidates and scheduled reminders closer to interview time.
-
-- **Authentication & Role-Based Access**  
-  Add user accounts (e.g., via NextAuth) with roles like Recruiter, Hiring Manager, and Candidate to secure and personalize the experience.
-
-- **Export & Reporting**  
-  Generate downloadable CSV/PDF reports of match results, summaries, and interview schedules for offline review or compliance.
-
-- **Interactive Analytics Dashboard**  
-  Visualize hiring funnel metrics—number of uploads, matches per job, time-to-hire—and surface actionable insights.
-
-- **Resume Enhancement Suggestions**  
-  Use GPT to give candidates AI-driven tips on improving their resumes (e.g., clarifying bullet points, optimizing keywords).
-
-- **Multi-Language & Localization**  
-  Support multi-language job descriptions and resume parsing to serve a global audience.
-
-- **Drag-and-Drop & Batch Actions**  
-  Enhance UI with drag-and-drop bulk upload, bulk delete, and bulk export capabilities.
-
-- **Chatbot Pre-Screening**  
-  Embed a chatbot to ask candidates initial screening questions and automatically rank responses before human review.
-
-- **Model Fine-Tuning & A/B Testing**  
-  Experiment with fine-tuned embedding or summarization models and measure improvements in match accuracy.
-
-These improvements will transform the MVP into a robust, enterprise-ready hiring platform. ```
