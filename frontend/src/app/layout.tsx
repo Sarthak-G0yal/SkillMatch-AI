@@ -29,7 +29,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
       >
         <nav className="bg-white shadow px-6 py-4 flex gap-8 items-center">
-          <Link href="/" className="font-bold text-lg text-blue-800 hover:underline">
+          <Link
+            href="/"
+            className="font-bold text-lg text-blue-800 hover:underline"
+          >
             SkillMatch AI
           </Link>
           <Link href="/upload" className="hover:underline font-medium text-sm">
@@ -38,7 +41,10 @@ export default function RootLayout({
           <Link href="/match" className="hover:underline font-medium text-sm">
             Match
           </Link>
-          <Link href="/scheduler" className="hover:underline font-medium text-sm">
+          <Link
+            href="/scheduler"
+            className="hover:underline font-medium text-sm"
+          >
             Scheduler
           </Link>
           <Link href="/chatbot" className="hover:underline font-medium text-sm">

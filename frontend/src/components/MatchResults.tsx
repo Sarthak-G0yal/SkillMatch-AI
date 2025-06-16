@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 type ResumeSummary = {
   skills: string;
@@ -16,7 +16,7 @@ type Match = {
 };
 
 export default function MatchResults() {
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -28,21 +28,24 @@ export default function MatchResults() {
     setLoading(true);
     try {
       const form = new FormData();
-      form.append('job_description', description);
-      const res = await fetch('http://localhost:8000/match', { method: 'POST', body: form });
+      form.append("job_description", description);
+      const res = await fetch("http://localhost:8000/match", {
+        method: "POST",
+        body: form,
+      });
       const data = await res.json();
       // data.matches includes summary per match
       setMatches(data.matches || []);
       setShowResults(true);
     } catch (err) {
-      console.error('Match error', err);
+      console.error("Match error", err);
     } finally {
       setLoading(false);
     }
   };
 
   const reset = () => {
-    setDescription('');
+    setDescription("");
     setMatches([]);
     setShowResults(false);
   };
@@ -63,26 +66,34 @@ export default function MatchResults() {
             disabled={loading}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            {loading ? 'Matching...' : 'Match'}
+            {loading ? "Matching..." : "Match"}
           </button>
         </form>
       ) : (
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">Top Matches</h2>
-            <button onClick={reset} className="text-sm text-blue-600 hover:underline">
+            <button
+              onClick={reset}
+              className="text-sm text-blue-600 hover:underline"
+            >
               ← New Match
             </button>
           </div>
           {matches.map((match, i) => (
             <div key={i} className="border rounded p-4 bg-gray-50">
               <p className="font-semibold">
-                {match.filename} – <span className="text-blue-600">{(match.score * 100).toFixed(2)}%</span>
+                {match.filename} –{" "}
+                <span className="text-blue-600">
+                  {(match.score * 100).toFixed(2)}%
+                </span>
               </p>
               <p className="text-sm text-gray-700 mt-1">{match.snippet}</p>
               <div className="mt-3 border-t pt-3">
                 <h3 className="font-semibold">Resume Summary</h3>
-                <p><strong>Skills:</strong> {match.summary.skills}</p>
+                <p>
+                  <strong>Skills:</strong> {match.summary.skills}
+                </p>
                 <div className="mt-1">
                   <strong>Experience:</strong>
                   <ul className="list-disc list-inside">
@@ -91,7 +102,9 @@ export default function MatchResults() {
                     ))}
                   </ul>
                 </div>
-                <p className="mt-1"><strong>Education:</strong> {match.summary.education}</p>
+                <p className="mt-1">
+                  <strong>Education:</strong> {match.summary.education}
+                </p>
               </div>
             </div>
           ))}

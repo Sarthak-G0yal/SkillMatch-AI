@@ -1,4 +1,4 @@
-import MatchResults from '@/components/MatchResults';
+import MatchResults from "@/components/MatchResults";
 
 export default function MatchPage() {
   return (

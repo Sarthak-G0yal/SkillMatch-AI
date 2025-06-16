@@ -9,6 +9,7 @@ from services.store import resume_texts, resume_vectors, resume_files
 
 router = APIRouter()
 
+
 @router.post("/upload_bulk")
 async def upload_bulk(files: List[UploadFile] = File(...)):
     uploaded = 0

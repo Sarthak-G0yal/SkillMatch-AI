@@ -13,19 +13,21 @@ export default function SchedulerPage() {
   const [message, setMessage] = useState("");
 
   const handleBooking = async () => {
-  const res = await fetch("http://localhost:8000/book", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, slot: selectedSlot }),
-  });
+    const res = await fetch("http://localhost:8000/book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, slot: selectedSlot }),
+    });
 
-  const data = await res.json();
-  setMessage(data.message || "Booking failed");
+    const data = await res.json();
+    setMessage(data.message || "Booking failed");
 
-  if (data.event_link) {
-    setMessage(`${data.message}. View on Google Calendar: ${data.event_link}`);
-  }
-};
+    if (data.event_link) {
+      setMessage(
+        `${data.message}. View on Google Calendar: ${data.event_link}`
+      );
+    }
+  };
 
   return (
     <div>

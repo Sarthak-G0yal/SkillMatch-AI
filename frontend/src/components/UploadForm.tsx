@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function UploadForm() {
   const [resumes, setResumes] = useState<FileList | null>(null);
@@ -13,14 +13,14 @@ export default function UploadForm() {
 
     const formData = new FormData();
     Array.from(resumes).forEach((file) => {
-      formData.append('files', file);
+      formData.append("files", file);
     });
 
     setUploading(true);
     setMessage(null);
 
-    const res = await fetch('http://localhost:8000/upload_bulk', {
-      method: 'POST',
+    const res = await fetch("http://localhost:8000/upload_bulk", {
+      method: "POST",
       body: formData,
     });
 
@@ -30,7 +30,7 @@ export default function UploadForm() {
     if (res.ok) {
       setMessage(`Successfully uploaded ${resumes.length} resumes.`);
     } else {
-      setMessage(`Upload failed: ${result.detail || 'Unknown error'}`);
+      setMessage(`Upload failed: ${result.detail || "Unknown error"}`);
     }
 
     setResumes(null);
@@ -38,7 +38,9 @@ export default function UploadForm() {
 
   return (
     <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-lg space-y-6">
-      <h1 className="text-2xl font-semibold text-gray-800 text-center">Bulk Resume Upload</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 text-center">
+        Bulk Resume Upload
+      </h1>
       <form onSubmit={handleUpload} className="space-y-4">
         <input
           type="file"
@@ -52,10 +54,12 @@ export default function UploadForm() {
           disabled={uploading}
           className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
         >
-          {uploading ? 'Uploading...' : 'Upload Resumes'}
+          {uploading ? "Uploading..." : "Upload Resumes"}
         </button>
       </form>
-      {message && <p className="text-center text-sm text-gray-700">{message}</p>}
+      {message && (
+        <p className="text-center text-sm text-gray-700">{message}</p>
+      )}
     </div>
   );
 }
